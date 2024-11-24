@@ -1,0 +1,30 @@
+name: Push Dynamic YML to Repo
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  push-yml-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Set up Git
+      - name: Set up Git
+        run: |
+          git config --global user.name "Your GitHub Username"
+          git config --global user.email "your-email@example.com"
+
+      # Add the dynamically generated YML file to the repo
+      - name: Add generated YML file to repo
+        run: |
+          cp backend/generated_yml_files/generated.yml .github/workflows/generated.yml
+          git add .github/workflows/generated.yml
+          git commit -m "Add dynamically generated YML file"
+          git push
